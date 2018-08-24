@@ -28,14 +28,9 @@
             <a class="nav-link" href="/listings/products.php">Aanbod</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-md-0">
-          <input class="form-control" type="text" placeholder="Zoeken" aria-label="Search"> &nbsp;&nbsp;
-          <a class="btn btn-secondary" href="#" role="button">
-            <i class="fa d-inline fa-lg fa-search"></i>
-          </a>&nbsp;&nbsp;
-          <a class="btn btn-primary" href="/listings/add.php" role="button">
-            <i class="fa d-inline fa-lg fa-plus"></i>
-          </a>&nbsp;&nbsp;
+        <form class="form-inline my-2 my-md-0" action="../listings/products.php" method="get">
+          <input class="form-control" type="text" placeholder="Zoeken" name="title" aria-label="Search"> &nbsp;&nbsp;
+          <button type="submit" class="btn btn-secondary"><i class="fa d-inline fa-lg fa-search"></i></button>&nbsp;&nbsp;
 		  
 		  <?php session_start(); if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){ ?>
           <a class="btn btn-primary" href="#" role="button">
@@ -47,9 +42,8 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fa d-inline fa-lg fa-user-circle-o"></i> Mijn account&nbsp;</a>
             <div class="dropdown-menu" aria-labelledby="dropdown09">
-              <a class="dropdown-item" href="#">Mijn profiel</a>
-              <a class="dropdown-item" href="#">Mijn aanbod</a>
-              <a class="dropdown-item" href="/users/logout">Uitloggen</a>
+              <a class="dropdown-item" href="/users/profile.php">Mijn profiel</a>
+              <a class="dropdown-item" href="/users/logout.php">Uitloggen</a>
             </div>
           </li>
         </ul>

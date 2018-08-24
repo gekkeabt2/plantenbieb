@@ -8,50 +8,61 @@ if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true){
 
 
 
-$title = $kind = $category = $description = $amount = $picture = $error = "";
+$title = $kind = $category = $description = $amount = $picture = $error = $success = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$title = $_POST['title']; 
-	$kind = $_POST['kind']; 
-	$category = $_POST['category']; 
+	if(isset($_POST["kind"])) $kind = $_POST['kind']; 
+	if(isset($_POST["category"])) $category = $_POST['category']; 
 	$description = $_POST['description']; 
 	$amount = $_POST['amount']; 
-	$randomname = basename(generateRandomString().$_FILES["fileToUpload"]["name"]);
-	
-	
+	$user = $_SESSION["id"];
 	
 	// Image upload
-	$target_dir = "../uploads/";
-	$target_file = $target_dir . $randomname ;
-	$uploadOk = 1;
-	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-	// Check if image file is a actual image or fake image
-	if(isset($_POST["submit"])) {
-		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-		if($check !== false) {
-			echo "File is an image - " . $check["mime"] . ".";
-			$uploadOk = 1;
-		} else {
-			echo "File is not an image.";
-			$uploadOk = 0;
-		}
-	}
-	// Check if $uploadOk is set to 0 by an error
-	if ($uploadOk == 0) {
-		echo "Sorry, your file was not uploaded.";
-	// if everything is ok, try to upload file
-	} else {
-		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-			echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-		} else {
-			echo "Sorry, there was an error uploading your file.";
-		}
-	}
+	if($_FILES['fileToUpload']['name'] == ""){
+	}else{		
+	$picture = $randomname = basename(generateRandomString().$_FILES["fileToUpload"]["name"]);
 		
+		$target_dir = "../uploads/";
+		$target_file = $target_dir . $randomname ;
+		$uploadOk = 1;
+		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+		// Check if image file is a actual image or fake image
+		if(isset($_POST["submit"])) {
+			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+			if($check !== false) {
+				//echo "File is an image - " . $check["mime"] . ".";
+				$uploadOk = 1;
+			} else {
+				//echo "File is not an image.";
+				$uploadOk = 0;
+			}
+		}
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+			//echo "Sorry, your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+				//echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+			} else {
+				//echo "Sorry, there was an error uploading your file.";
+			}
+		}
+	}
 	
 	if($title==""||$kind==""||$category==""||$description==""||$amount==""){
 		$error = "U heeft zo te zien nog niet alle velden ingevuld/geselecteerd.";
+	}else{
+		$sql = "INSERT INTO offers (offer_title, offer_kind, offer_category, offer_description,offer_amount,offer_picture, offer_user)
+		VALUES (' $title', '$kind', '$category','$description','$amount','$picture','$user')";
 		
+		if ($link->query($sql) === TRUE) {
+			$success = "Gefeliciteerd! Uw aanbod is met success toegevoegd!";
+			$title = $kind = $category = $description = $amount = $picture = $error = "";
+		} else {
+			echo "Error: " . $sql . "<br>" . $link->error;
+		}
 	}
 	
 }
@@ -68,6 +79,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <?php if($error!=""){ ?>
 			<div class="alert alert-warning"><?php echo $error; ?></div>
 <?php } ?>
+<?php if($success!=""){ ?>
+			<div class="alert alert-success"><?php echo $success; ?></div>
+<?php } ?>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  enctype="multipart/form-data">
 				<div class="form-group">
 					 <label>Plantnaam</label>
@@ -78,16 +92,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				<div class="form-group">
 					 <label>Soort</label><br>
 					<select class="js-example-basic-single form-control" name="kind">
-						<option value="" <?php if ($kind=="") echo "selected";?> disabled hidden>Maak een keuze</option>
-						<option <?php if (isset($kind) && $kind=="stek") echo "selected";?> value="stek">Stek</option>
-						<option <?php if (isset($kind) && $kind=="zaad") echo "selected";?> value="zaad">Zaad</option>
-						<option <?php if (isset($kind) && $kind=="plant") echo "selected";?> value="plant">Plant</option>
+						<option value="" selected disabled hidden value="">Maak een keuze</option>
+						<option <?php if (isset($kind) && $kind=="Stek") echo "selected";?> value="Stek">Stek</option>
+						<option <?php if (isset($kind) && $kind=="Zaad") echo "selected";?> value="Zaad">Zaad</option>
+						<option <?php if (isset($kind) && $kind=="Plant") echo "selected";?> value="Plant">Plant</option>
 					</select> 
 				  </div>
 				  
 				<div class="form-group">
-					 <label>Omschrijving van uw aanbod</label><br>
-						<textarea style="height:300px" class="form-control" name="description"><?php echo $description; ?></textarea>
+					 <label>Omschrijving van uw aanbod (max 3000 karakters)</label><br>
+						<textarea style="height:300px" class="form-control" name="description" maxlength="3000"><?php echo $description; ?></textarea>
 				  </div>
 				  </div>
 				  <div class="col">

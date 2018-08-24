@@ -19,8 +19,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				if($pass==$row["user_password"]){
 					session_start();
 					$_SESSION["loggedin"] = true;
-					$_SESSION["id"] = $id;
-					$_SESSION["mail"] = $mail;
+					$_SESSION["id"] = $row["user_id"];
+					$_SESSION["mail"] = $row["user_mail"];
 					header("location: ../index.php");
 				}else{
 					$error = "Het wachtwoord dat u heeft ingevoerd blijkt fout te zijn.";

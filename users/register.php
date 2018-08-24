@@ -50,10 +50,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		<?php if($error!=""){ ?>
 		<div class="alert alert-warning"><?php echo $error; ?></div>
 		<?php } ?>
-		<p>U kunt hier uw gegevens invullen om een account aan te maken.</p>
 		<?php if($success!=""){ ?>
 		<div class="alert alert-success"><?php echo $success; ?></div>
 		<?php } ?>
+		<p>U kunt hier uw gegevens invullen om een account aan te maken.</p>
 		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 		   <div class="form-group">
 			  <label>Naam</label>
@@ -77,8 +77,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		   </div>
 		   <div class="form-group">
 			  <label>Biografie</label> <small>Optioneel en openbaar.</small>
-			  <textarea name="bio" class="form-control" placeholder="Hier kunt u iets over uzelf vertellen."><?php echo $bio; ?>
-			  </textarea>
+			  <textarea name="bio" class="form-control" placeholder="Hier kunt u iets over uzelf vertellen."><?php echo $bio; ?></textarea>
 		   </div>
 		   <div class="form-group">
 			  <input type="submit" class="btn btn-primary" value="Registreer">
