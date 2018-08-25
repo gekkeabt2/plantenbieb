@@ -7,17 +7,6 @@ if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true){
 }
 $title = $kind = $category = $description = $amount = $picture = $error = $success = "";
 
-if(isset($_POST["submit"])&&$_POST["submit"]=="Verwijderen"){
-	$sql = "DELETE FROM offers WHERE offer_id = ".$_GET["id"];	
-	if ($link->query($sql) === TRUE) {
-		$success = "Gefeliciteerd! Uw aanbod is met success verwijderd!";
-		header("location: /users/profile.php");
-	} else {
-		echo "Error: " . $sql . "<br>" . $link->error;
-	}
-}else{
-
-
 $sql_offers = "SELECT * FROM offers WHERE offer_id ='" . $_GET["id"] . "' AND offer_user ='". $_SESSION["id"]."'";$result_offers = $link->query($sql_offers);
 if ($result_offers->num_rows > 0) {
 	while($row_offer = $result_offers->fetch_assoc()) {
@@ -29,6 +18,21 @@ if ($result_offers->num_rows > 0) {
 		$picture = $row_offer["offer_picture"];	
 	}
 }
+
+
+
+if(isset($_POST["submit"])&&$_POST["submit"]=="Verwijderen"){
+	$sql = "DELETE FROM offers WHERE offer_id = ".$_GET["id"];	
+	unlink("../uploads/".$picture);
+	if ($link->query($sql) === TRUE) {
+		$success = "Gefeliciteerd! Uw aanbod is met success verwijderd!";
+		header("location: /users/profile.php");
+	} else {
+		echo "Error: " . $sql . "<br>" . $link->error;
+	}
+}else{
+
+
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -165,7 +169,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				 
 				  <div class="form-group">
 					 <input type="submit" name="submit" class="btn btn-primary" value="Publiceren">
-					 <input type="submit" name="submit" class="btn btn-danger" value="Verwijderen" onclick="return confirm('Are you sure you want to delete this item?');">
+					 <input type="submit" name="submit" class="btn btn-danger" value="Verwijderen" onclick="return confirm('Weet u zeker dat u dit wilt verwijderen?');">
 				  </div>
 </form>
 
