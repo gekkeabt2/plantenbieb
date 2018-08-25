@@ -37,7 +37,7 @@ $sql_offers = "SELECT * FROM offers WHERE (offer_title like '%$title%' or offer_
 				<div class="form-group">
 					 <label>Soort</label><br>
 					<select class="js-example-basic-single form-control" name="kind">
-						<option value="" selected disabled hidden value="">Maak een keuze</option>
+						<option value="" selected value="">Alles</option>
 						<option <?php if (isset($kind) && $kind=="Stek") echo "selected";?> value="Stek">Stek</option>
 						<option <?php if (isset($kind) && $kind=="Zaad") echo "selected";?> value="Zaad">Zaad</option>
 						<option <?php if (isset($kind) && $kind=="Plant") echo "selected";?> value="Plant">Plant</option>
@@ -49,7 +49,7 @@ $sql_offers = "SELECT * FROM offers WHERE (offer_title like '%$title%' or offer_
 				<div class="form-group">
 					 <label>Categorie</label><br>
 					<select class="js-example-basic-single form-control" name="category">
-						<option value="" selected disabled hidden>Maak een keuze</option>
+						<option value="" selected value="">Alles</option>
 					
 					  
 					  <?php
@@ -68,7 +68,6 @@ $sql_offers = "SELECT * FROM offers WHERE (offer_title like '%$title%' or offer_
 							echo "0 Resultaten";
 						}
 					  ?>
-						<option value="anders">Anders</option>
 					  
 					  
 					</select>					 
@@ -98,6 +97,7 @@ $sql_offers = "SELECT * FROM offers WHERE (offer_title like '%$title%' or offer_
 				 
 				  <div class="form-group">
 					 <input type="submit" class="btn btn-primary" value="Zoeken">
+					<input type="reset" class="btn btn-default" value="Reset">
 				  </div>
 </form>
 

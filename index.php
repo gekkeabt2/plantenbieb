@@ -1,4 +1,7 @@
-<?php include_once("template/header.php"); ?>
+<?php 
+include_once("template/header.php"); 
+require_once("includes/config.php"); 
+?>
 
 
 
@@ -32,62 +35,37 @@
   <div class="m-2">
     <div class="container">
       <div class="row">
-        <div class="col-md-3 my-0">
+        <?php 
+	  $sql_offers = "SELECT * FROM offers WHERE offer_kind = 'Stek' LIMIT 4";$result_offers = $link->query($sql_offers);
+			if ($result_offers->num_rows > 0) {
+				while($row_offers = $result_offers->fetch_assoc()) {
+					$sql_user = "SELECT * FROM users WHERE user_id = ". $row_offers['offer_user'] ."";$result_user = $link->query($sql_user);
+					
+					$sql_cat = "SELECT * FROM categories WHERE cat_id = " . $row_offers["offer_category"]; $result_cat = $link->query($sql_cat);
+					if ($result_cat->num_rows > 0) {
+						while($row_cat = $result_cat->fetch_assoc()) {
+						$category = $row_cat["cat_name"];
+					}}
+	  ?>
+        <div class="col-3">
           <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+              <li class="list-group-item"><h4><?php echo $row_offers["offer_title"]; ?></h4></li>
+            <img class="card-img-top" src="<?php if($row_offers["offer_picture"]!=""){echo "uploads/".$row_offers["offer_picture"];}else{echo "uploads/stock.jpg";} ?>" alt="Card image cap">
+              <li class="list-group-item"><?php echo $category; ?></li>
+              <li class="list-group-item"><?php echo substr($row_offers["offer_description"],0,100); ?></li>
+              <li class="list-group-item">Postcode: <?php while($row_users = $result_user->fetch_assoc()) {echo $row_users["user_zip"];}?></li>
             </ul>
             <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              <a href="<?php echo "listings/product_view.php?id=".$row_offers["offer_id"]; ?>" class="card-link">Bekijk aanbod</a>
             </div>
           </div>
         </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
+		<?php
+			}}else {
+				echo "Geen resultaten, wees de eerste die iets toevoegt!";
+			}
+		?>
       </div>
     </div>
   </div>
@@ -103,62 +81,37 @@
   <div class="m-2">
     <div class="container">
       <div class="row">
-        <div class="col-md-3 my-0">
+        <?php 
+	  $sql_offers = "SELECT * FROM offers WHERE offer_kind = 'Zaad' LIMIT 4";$result_offers = $link->query($sql_offers);
+			if ($result_offers->num_rows > 0) {
+				while($row_offers = $result_offers->fetch_assoc()) {
+					$sql_user = "SELECT * FROM users WHERE user_id = ". $row_offers['offer_user'] ."";$result_user = $link->query($sql_user);
+					
+					$sql_cat = "SELECT * FROM categories WHERE cat_id = " . $row_offers["offer_category"]; $result_cat = $link->query($sql_cat);
+					if ($result_cat->num_rows > 0) {
+						while($row_cat = $result_cat->fetch_assoc()) {
+						$category = $row_cat["cat_name"];
+					}}
+	  ?>
+        <div class="col-3">
           <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+              <li class="list-group-item"><h4><?php echo $row_offers["offer_title"]; ?></h4></li>
+            <img class="card-img-top" src="<?php if($row_offers["offer_picture"]!=""){echo "uploads/".$row_offers["offer_picture"];}else{echo "uploads/stock.jpg";} ?>" alt="Card image cap">
+              <li class="list-group-item"><?php echo $category; ?></li>
+              <li class="list-group-item"><?php echo substr($row_offers["offer_description"],0,100); ?></li>
+              <li class="list-group-item">Postcode: <?php while($row_users = $result_user->fetch_assoc()) {echo $row_users["user_zip"];}?></li>
             </ul>
             <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              <a href="<?php echo "listings/product_view.php?id=".$row_offers["offer_id"]; ?>" class="card-link">Bekijk aanbod</a>
             </div>
           </div>
         </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
+		<?php
+			}}else {
+				echo "Geen resultaten, wees de eerste die iets toevoegt!";
+			}
+		?>
       </div>
     </div>
   </div>
@@ -174,62 +127,37 @@
   <div class="m-2">
     <div class="container">
       <div class="row">
-        <div class="col-md-3 my-0">
+                <?php 
+	  $sql_offers = "SELECT * FROM offers WHERE offer_kind = 'Plant' LIMIT 4";$result_offers = $link->query($sql_offers);
+			if ($result_offers->num_rows > 0) {
+				while($row_offers = $result_offers->fetch_assoc()) {
+					$sql_user = "SELECT * FROM users WHERE user_id = ". $row_offers['offer_user'] ."";$result_user = $link->query($sql_user);
+					
+					$sql_cat = "SELECT * FROM categories WHERE cat_id = " . $row_offers["offer_category"]; $result_cat = $link->query($sql_cat);
+					if ($result_cat->num_rows > 0) {
+						while($row_cat = $result_cat->fetch_assoc()) {
+						$category = $row_cat["cat_name"];
+					}}
+	  ?>
+        <div class="col-3">
           <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
+              <li class="list-group-item"><h4><?php echo $row_offers["offer_title"]; ?></h4></li>
+            <img class="card-img-top" src="<?php if($row_offers["offer_picture"]!=""){echo "uploads/".$row_offers["offer_picture"];}else{echo "uploads/stock.jpg";} ?>" alt="Card image cap">
+              <li class="list-group-item"><?php echo $category; ?></li>
+              <li class="list-group-item"><?php echo substr($row_offers["offer_description"],0,100); ?></li>
+              <li class="list-group-item">Postcode: <?php while($row_users = $result_user->fetch_assoc()) {echo $row_users["user_zip"];}?></li>
             </ul>
             <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              <a href="<?php echo "listings/product_view.php?id=".$row_offers["offer_id"]; ?>" class="card-link">Bekijk aanbod</a>
             </div>
           </div>
         </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 my-0">
-          <div class="card">
-            <img class="card-img-top" src="https://pingendo.com/assets/photos/wireframe/photo-1.jpg" alt="Card image cap">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Cras justo odio</li>
-              <li class="list-group-item">Dapibus ac facilisis in</li>
-              <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
-            </div>
-          </div>
-        </div>
+		<?php
+			}}else {
+				echo "Geen resultaten, wees de eerste die iets toevoegt!";
+			}
+		?>
       </div>
     </div>
   </div>

@@ -26,6 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 				if ($link->query($sql) === TRUE) {
 					$success = "Gefeliciteerd! U kunt nu inloggen via de <a href='login.php'>inlog pagina.</a>";
+					$name = $mail = $zip = $pass = $pass2 = $bio = "";
 				} else {
 					echo "Error: " . $sql . "<br>" . $link->error;
 				}

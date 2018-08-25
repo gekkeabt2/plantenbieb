@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css"> </head>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../includes/chatbox.css" type="text/css">
 
 
 <body>
@@ -31,9 +32,9 @@
         <form class="form-inline my-2 my-md-0" action="../listings/products.php" method="get">
           <input class="form-control" type="text" placeholder="Zoeken" name="title" aria-label="Search"> &nbsp;&nbsp;
           <button type="submit" class="btn btn-secondary"><i class="fa d-inline fa-lg fa-search"></i></button>&nbsp;&nbsp;
-		  
+		  <a class="btn btn-primary" href="/listings/product_add.php" role="button"><i class="fa d-inline fa-lg fa-plus"></i></a>&nbsp;&nbsp;
 		  <?php session_start(); if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){ ?>
-          <a class="btn btn-primary" href="#" role="button">
+          <a class="btn btn-primary" href="/users/messages.php" role="button">
             <i class="fa d-inline fa-lg fa-comments"></i> (2) </a>
           </a>&nbsp;&nbsp;
         </form>

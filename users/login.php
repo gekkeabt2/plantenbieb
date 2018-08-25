@@ -16,7 +16,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$result = $link->query($query);
 		if ($result->num_rows > 0) {
 			if($row = $result->fetch_assoc()) {
-				if($pass==$row["user_password"]){
+				echo $pass;
+				echo "<br>";
+				echo $row["user_password"];
+				if($pass==str_replace(" ", "", $row["user_password"])){
 					session_start();
 					$_SESSION["loggedin"] = true;
 					$_SESSION["id"] = $row["user_id"];

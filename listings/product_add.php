@@ -127,7 +127,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 							echo "0 results";
 						}
 					  ?>
-						<option value="anders">Anders</option>
 					  
 					  
 					</select>					 

@@ -5,10 +5,31 @@ if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true){
     header("location: /users/login.php");
     exit;
 }
-
-
-
 $title = $kind = $category = $description = $amount = $picture = $error = $success = "";
+
+if(isset($_POST["submit"])&&$_POST["submit"]=="Verwijderen"){
+	$sql = "DELETE FROM offers WHERE offer_id = ".$_GET["id"];	
+	if ($link->query($sql) === TRUE) {
+		$success = "Gefeliciteerd! Uw aanbod is met success verwijderd!";
+		header("location: /users/profile.php");
+	} else {
+		echo "Error: " . $sql . "<br>" . $link->error;
+	}
+}else{
+
+
+$sql_offers = "SELECT * FROM offers WHERE offer_id ='" . $_GET["id"] . "' AND offer_user ='". $_SESSION["id"]."'";$result_offers = $link->query($sql_offers);
+if ($result_offers->num_rows > 0) {
+	while($row_offer = $result_offers->fetch_assoc()) {
+		$title = $row_offer["offer_title"];
+		$category = $row_offer["offer_category"];
+		$kind = $row_offer["offer_kind"];	
+		$amount = $row_offer["offer_amount"];	
+		$description = $row_offer["offer_description"];	
+		$picture = $row_offer["offer_picture"];	
+	}
+}
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$title = $_POST['title']; 
@@ -54,23 +75,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	if($title==""||$kind==""||$category==""||$description==""||$amount==""){
 		$error = "U heeft zo te zien nog niet alle velden ingevuld/geselecteerd.";
 	}else{
-		$sql = "INSERT INTO offers (offer_title, offer_kind, offer_category, offer_description,offer_amount,offer_picture, offer_user)
-		VALUES (' $title', '$kind', '$category','$description','$amount','$picture','$user')";
+		$sql = "UPDATE offers SET offer_title='$title', offer_kind='$kind', offer_category='$category',offer_description='$description', offer_amount='$amount',offer_picture='$picture' WHERE offer_user='".$_SESSION["id"]."' AND offer_id='".$_GET["id"]."'";
 		
 		if ($link->query($sql) === TRUE) {
-			$success = "Gefeliciteerd! Uw aanbod is met success toegevoegd!";
-			$title = $kind = $category = $description = $amount = $picture = $error = "";
+			$success = "Gefeliciteerd! Uw aanbod is met success aangepast!";
 		} else {
 			echo "Error: " . $sql . "<br>" . $link->error;
 		}
 	}
 	
 }
-
-
-
-
-
+}
 ?> 
 
 
@@ -82,7 +97,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <?php if($success!=""){ ?>
 			<div class="alert alert-success"><?php echo $success; ?></div>
 <?php } ?>
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  enctype="multipart/form-data">
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?id=".$_GET["id"]); ?>" method="post"  enctype="multipart/form-data">
 				<div class="form-group">
 					 <label>Plantnaam</label>
 					 <input type="text" name="title" class="form-control" value="<?php echo $title; ?>">
@@ -127,7 +142,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 							echo "0 results";
 						}
 					  ?>
-						<option value="anders">Anders</option>
 					  
 					  
 					</select>					 
@@ -142,7 +156,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				  <div class="form-group">
 					 <label>Foto</label>
 					 <input type="file" name="fileToUpload" id="fileToUpload" class="form-control">
-					 <br><img id="image_upload_preview" src="http://placehold.it/200x200" alt="your image"  width="200px"/>
+					 <br><img id="image_upload_preview" src="<?php if($picture!=""){echo "../uploads/" . $picture;}else{ echo "http://placehold.it/200x200";} ?>" alt="your image"  width="200px"/>
 				  </div>
 				  
 				  
@@ -151,6 +165,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				 
 				  <div class="form-group">
 					 <input type="submit" name="submit" class="btn btn-primary" value="Publiceren">
+					 <input type="submit" name="submit" class="btn btn-danger" value="Verwijderen" onclick="return confirm('Are you sure you want to delete this item?');">
 				  </div>
 </form>
 

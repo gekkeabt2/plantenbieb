@@ -99,9 +99,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                   <label>Profielbeschrijving</label>
                   <textarea class="form-control" placeholder="Postcode" name="bio"><?php echo $bio ?></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button><br>
-				<small>Na het wijzigen moet u opnieuw inloggen, dus onthoud uw nieuwe gegevens goed (email en wachtwoord).</small>
-              </form>
+                <small>Na het wijzigen moet u opnieuw inloggen, dus onthoud uw nieuwe gegevens goed (email en wachtwoord).</small><br>
+				<button type="submit" class="btn btn-primary">Save</button>
+				</form>
             </div>
             <div class="col-md-6">
 			<h1>Mijn aanbod</h1>
@@ -136,7 +136,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		  
 		<?php	}			
 			} else {
-				echo "0 Resultaten";
+				echo "U heeft nog geen aanbod, klik op het plusje bij de zoekbalk om uw eerste aanbod te plaatsen!";
 			}
 		?>
 	  </div>
