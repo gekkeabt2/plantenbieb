@@ -54,15 +54,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	if($title==""||$kind==""||$category==""||$description==""||$amount==""){
 		$error = "U heeft zo te zien nog niet alle velden ingevuld/geselecteerd.";
 	}else{
-		$sql = "INSERT INTO offers (offer_title, offer_kind, offer_category, offer_description,offer_amount,offer_picture, offer_user)
-		VALUES (' $title', '$kind', '$category','$description','$amount','$picture','$user')";
-		
-		if ($link->query($sql) === TRUE) {
-			$success = "Gefeliciteerd! Uw aanbod is met success toegevoegd!";
-			$title = $kind = $category = $description = $amount = $picture = $error = "";
-		} else {
-			echo "Error: " . $sql . "<br>" . $link->error;
-		}
+		$database->insert("offers", [
+			"offer_title" => $title,
+			"offer_kind" => $kind, 
+			"offer_category" => $category, 
+			"offer_description" => $description , 
+			"offer_amount" => $amount, 
+			"offer_picture" => $picture,
+			"offer_user" => $user
+		]);
+		$success = "Gefeliciteerd! Uw aanbod is met success toegevoegd!";
+		$title = $kind = $category = $description = $amount = $picture = $error = "";
 	}
 	
 }
@@ -111,20 +113,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 						<option value="" selected disabled hidden>Maak een keuze</option>
 					
 					  
-					  <?php
-					  $sql = "SELECT * FROM categories WHERE cat_parent = 0 AND cat_visible = 1";$result = $link->query($sql);
-						if ($result->num_rows > 0) {
-							while($row = $result->fetch_assoc()) {			
-								echo "<optgroup label='". $row['cat_name'] . "'>";
-								$sql2 = "SELECT * FROM categories WHERE cat_parent = " . $row["cat_id"]; $result2 = $link->query($sql2);
-								if ($result->num_rows > 0) {
-									while($row2 = $result2->fetch_assoc()) {
-									echo "<option " . (($row2["cat_id"]==$category)?'selected':"") ." value=" . $row2["cat_id"] . ">" . $row2["cat_name"] . "</option>";
-								}}
-								echo "</optgroup>";						
-							}					
-						} else {
-							echo "0 results";
+					   <?php
+						$categories = $database->select('categories','*',["AND"=>["cat_parent[=]"=>0,"cat_visible[=]"=>1]]);
+						foreach($categories as $data){
+							echo "<optgroup label='". $data['cat_name'] . "'>";
+							$sub_categories = $database->select('categories','*',["AND"=>["cat_parent[=]"=>$data['cat_id'],"cat_visible[=]"=>1]]);
+							foreach($sub_categories as $data2){
+							echo "<option " . (($data2["cat_id"]==$category)?'selected':"") ." value=" . $data2["cat_id"] . ">" . $data2["cat_name"] . "</option>";
+								}
+								echo "</optgroup>";		
+							
 						}
 					  ?>
 					  

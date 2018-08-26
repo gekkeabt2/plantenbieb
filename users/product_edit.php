@@ -7,29 +7,23 @@ if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true){
 }
 $title = $kind = $category = $description = $amount = $picture = $error = $success = "";
 
-$sql_offers = "SELECT * FROM offers WHERE offer_id ='" . $_GET["id"] . "' AND offer_user ='". $_SESSION["id"]."'";$result_offers = $link->query($sql_offers);
-if ($result_offers->num_rows > 0) {
-	while($row_offer = $result_offers->fetch_assoc()) {
-		$title = $row_offer["offer_title"];
-		$category = $row_offer["offer_category"];
-		$kind = $row_offer["offer_kind"];	
-		$amount = $row_offer["offer_amount"];	
-		$description = $row_offer["offer_description"];	
-		$picture = $row_offer["offer_picture"];	
-	}
-}
+
+$offers = $database->select("offers", ['offer_amount','offer_title', 'offer_description', 'offer_picture', 'offer_id','offer_kind','offer_category'], ["AND"=>["offer_id[=]"=>$_GET["id"],"offer_user[=]"=>$_SESSION["id"]]]);
+$title = $offers[0]["offer_title"];
+$category = $offers[0]["offer_category"];
+$kind = $offers[0]["offer_kind"];	
+$amount = $offers[0]["offer_amount"];	
+$description = $offers[0]["offer_description"];	
+$picture = $offers[0]["offer_picture"];	
+
 
 
 
 if(isset($_POST["submit"])&&$_POST["submit"]=="Verwijderen"){
-	$sql = "DELETE FROM offers WHERE offer_id = ".$_GET["id"];	
+	$database->delete("offers", ["offer_id" => $_GET["id"]]);
 	unlink("../uploads/".$picture);
-	if ($link->query($sql) === TRUE) {
-		$success = "Gefeliciteerd! Uw aanbod is met success verwijderd!";
-		header("location: /users/profile.php");
-	} else {
-		echo "Error: " . $sql . "<br>" . $link->error;
-	}
+	$success = "Gefeliciteerd! Uw aanbod is met success verwijderd!";
+	header("location: /users/profile.php");
 }else{
 
 
@@ -79,13 +73,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	if($title==""||$kind==""||$category==""||$description==""||$amount==""){
 		$error = "U heeft zo te zien nog niet alle velden ingevuld/geselecteerd.";
 	}else{
-		$sql = "UPDATE offers SET offer_title='$title', offer_kind='$kind', offer_category='$category',offer_description='$description', offer_amount='$amount',offer_picture='$picture' WHERE offer_user='".$_SESSION["id"]."' AND offer_id='".$_GET["id"]."'";
-		
-		if ($link->query($sql) === TRUE) {
-			$success = "Gefeliciteerd! Uw aanbod is met success aangepast!";
-		} else {
-			echo "Error: " . $sql . "<br>" . $link->error;
-		}
+		$data = $database->update("offers", [
+			"offer_title" => $title,
+			"offer_kind" => $kind,
+			"offer_category" => $category,
+			"offer_description" => $description,
+			"offer_amount" => $amount,
+			"offer_picture" => $picture
+		], [
+			"offer_id[=]" => $_GET['id']
+		]);
+		$success = "Gefeliciteerd! Uw aanbod is met success aangepast!";
 	}
 	
 }
@@ -131,19 +129,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					
 					  
 					  <?php
-					  $sql = "SELECT * FROM categories WHERE cat_parent = 0 AND cat_visible = 1";$result = $link->query($sql);
-						if ($result->num_rows > 0) {
-							while($row = $result->fetch_assoc()) {			
-								echo "<optgroup label='". $row['cat_name'] . "'>";
-								$sql2 = "SELECT * FROM categories WHERE cat_parent = " . $row["cat_id"]; $result2 = $link->query($sql2);
-								if ($result->num_rows > 0) {
-									while($row2 = $result2->fetch_assoc()) {
-									echo "<option " . (($row2["cat_id"]==$category)?'selected':"") ." value=" . $row2["cat_id"] . ">" . $row2["cat_name"] . "</option>";
-								}}
-								echo "</optgroup>";						
-							}					
-						} else {
-							echo "0 results";
+						$categories = $database->select('categories','*',["AND"=>["cat_parent[=]"=>0,"cat_visible[=]"=>1]]);
+						foreach($categories as $data){
+							echo "<optgroup label='". $data['cat_name'] . "'>";
+							$sub_categories = $database->select('categories','*',["AND"=>["cat_parent[=]"=>$data['cat_id'],"cat_visible[=]"=>1]]);
+							foreach($sub_categories as $data2){
+							echo "<option " . (($data2["cat_id"]==$category)?'selected':"") ." value=" . $data2["cat_id"] . ">" . $data2["cat_name"] . "</option>";
+							}
+							echo "</optgroup>";		
 						}
 					  ?>
 					  

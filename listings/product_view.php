@@ -2,28 +2,21 @@
 include_once("../template/header.php"); 
 include_once("../includes/config.php"); 
 $id = $_GET["id"];
+$offers = $database->select("offers", ['offer_amount','offer_date','offer_picture','offer_title','offer_id','offer_user','offer_category','offer_description','offer_kind'], ["offer_id" => $id]);
+$offer_cat = $database->select("categories", ['cat_name'], ["cat_id" => $offers[0]["offer_category"]]);
+$offer_user = $database->select("users", ['user_zip','user_id','user_name'], ["user_id" => $offers[0]["offer_user"]]);
 
-$sql = "SELECT * FROM offers WHERE offer_id = $id";$result = $link->query($sql);
-if ($result->num_rows > 0) {
-	while($row = $result->fetch_assoc()) {			
-		$title = $row["offer_title"];
-		$sql_user = "SELECT * FROM users WHERE user_id = ". $row['offer_user'] ."";$result_user = $link->query($sql_user);
-		while($row_users = $result_user->fetch_assoc()) {$user = $row_users["user_name"];$user_id = $row_users["user_id"];$user_zip = $row_users["user_zip"];}
-		$kind = $row["offer_kind"];
-		$description = $row["offer_description"];
-		$date = $row["offer_date"];
-		$amount = $row["offer_amount"];
-		$picture = $row["offer_picture"];
-		$sql2 = "SELECT * FROM categories WHERE cat_id = " . $row["offer_category"]; $result2 = $link->query($sql2);
-		if ($result->num_rows > 0) {
-			while($row2 = $result2->fetch_assoc()) {
-			$category = $row2["cat_name"];
-		}}					
-	}					
-} else {
-	echo "0 results";
-}
+$title = $offers[0]["offer_title"];
+$kind = $offers[0]["offer_kind"];
+$description = $offers[0]["offer_description"];
+$date = $offers[0]["offer_date"];
+$amount = $offers[0]["offer_amount"];
+$picture = $offers[0]["offer_picture"];
+$category = $offer_cat[0]["cat_name"];
 
+$user = $offer_user[0]["user_name"];
+$user_id = $offer_user[0]["user_id"];
+$user_zip = $offer_user[0]["user_zip"];
 ?> 
 
   <div class="">

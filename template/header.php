@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
       <i class="fa d-inline fa-lg fa-leaf"></i>&nbsp;
-      <a class="navbar-brand" href="/index.php">PlantenBieb</a>
+      <a class="navbar-brand" href="/index.php">PlantenBieb - Beta</a>
       <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
