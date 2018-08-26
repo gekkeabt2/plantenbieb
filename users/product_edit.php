@@ -93,7 +93,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?> 
 
 
-<h1 class="display-4">Nieuwe aanbod!</h1>
+<h1 class="display-4">Bewerk aanbod</h1>
 
 <?php if($error!=""){ ?>
 			<div class="alert alert-warning"><?php echo $error; ?></div>

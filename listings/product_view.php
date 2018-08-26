@@ -8,7 +8,7 @@ if ($result->num_rows > 0) {
 	while($row = $result->fetch_assoc()) {			
 		$title = $row["offer_title"];
 		$sql_user = "SELECT * FROM users WHERE user_id = ". $row['offer_user'] ."";$result_user = $link->query($sql_user);
-		while($row_users = $result_user->fetch_assoc()) {$user = $row_users["user_name"];$user_zip = $row_users["user_zip"];}
+		while($row_users = $result_user->fetch_assoc()) {$user = $row_users["user_name"];$user_id = $row_users["user_id"];$user_zip = $row_users["user_zip"];}
 		$kind = $row["offer_kind"];
 		$description = $row["offer_description"];
 		$date = $row["offer_date"];
@@ -39,7 +39,7 @@ if ($result->num_rows > 0) {
             <div class="col-md-6">
               <div class="card">
                 <div class="card-body">
-                  <h4>Door: <?php echo $user; ?></h4>
+                  <h4>Door: <a href="public_profile.php?id=<?php echo $user_id; ?>"><?php echo $user; ?></a></h4>
                   <h6 class="text-muted"><?php echo $kind; ?> -&gt; <?php echo $category; ?></h6>
                   <p><b>Omschrijving</b><br><?php echo $description; ?></p>
                   <p><b>Hoeveelheid</b><br><?php echo $amount; ?></p>
@@ -51,7 +51,7 @@ if ($result->num_rows > 0) {
             <div class="col-md-6">
               <img class="img-fluid d-block" src="<?php if($picture!=""){echo "../uploads/" . $picture;}else{echo "../uploads/stock.jpg";} ?>">
               <br>
-              <a class="btn btn-primary" href="#">Contact opnemen </a>
+              <a class="btn btn-primary" href="public_profile.php?id=<?php echo $user_id; ?>">Contact opnemen </a><br><br>
             </div>
           </div>
         </div>

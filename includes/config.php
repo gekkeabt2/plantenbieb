@@ -14,6 +14,19 @@ if($link === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
+
+require_once  'Medoo.php';
+use Medoo\Medoo;
+$database = new Medoo([
+	// required
+	'database_type' => 'mysql',
+	'database_name' => 'planten',
+	'server' => 'localhost',
+	'username' => 'root',
+	'password' => ''
+]);
+
+
 function generateRandomString($length = 100) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
