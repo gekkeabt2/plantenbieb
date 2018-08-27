@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^([^/]*)/([^/]*)/([^/]*)/([^/]*)/([^/]*)\.html$ /listings/products.php?kind=$1&category=$2&title=$3&zip=$4&max_distance=$5 [L]

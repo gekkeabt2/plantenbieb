@@ -3,42 +3,53 @@ include_once("template/header.php");
 require_once("includes/config.php"); 
 // Get a list of the specified kind //
 function getList($kind) {
-	$offers = $GLOBALS['database']->select("offers", ['offer_picture','offer_title','offer_id','offer_user','offer_category','offer_description'], ["offer_kind" => $kind,'LIMIT' => 3]);
-	if(count($offers)=="0"){
+	$result_offers = $GLOBALS["pdo"]->query("SELECT * FROM offers WHERE offer_kind = '$kind'")->fetchAll();
+	if(count($result_offers)=="0"){
 	echo "Geen resultaten gevonden, wees de eerste die iets toevoegt!";
-	}else{
-	foreach($offers as $data)
-	{
-	$offer_cat = $GLOBALS['database']->select("categories", ['cat_name'], ["cat_id" => $data["offer_category"]]);
-	$offer_user = $GLOBALS['database']->select("users", ['user_zip'], ["user_id" => $data["offer_user"]]);
-?>
-<div class="col-4">
-  <div class="card">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <h4>
-          <?php echo $data["offer_title"]; ?>
-        </h4>
-      </li>
-      <img class="card-img-top" src="<?php if($data["offer_picture"]!=""){echo "uploads/".$data["offer_picture"];}else{echo "uploads/stock.jpg";} ?>" alt="Card image cap">
-      <li class="list-group-item">
-        <?php echo $offer_cat[0]["cat_name"] ?>
-      </li>
-      <li class="list-group-item">
-        <?php echo substr($data["offer_description"],0,100); ?>
-      </li>
-      <li class="list-group-item">Postcode: 
-        <?php echo $offer_user[0]["user_zip"];?>
-      </li>
-    </ul>
-    <div class="card-body">
-      <a href="<?php echo "listings/product_view.php?id=".$data["offer_id"]; ?>" class="card-link">Bekijk aanbod
-      </a>
-    </div>
-  </div>
-</div>
-<?php
-}}
+	}else{?>
+	
+<div class="list-group">	
+		<?php
+			foreach($result_offers as $offer_data){
+					
+					$user = $GLOBALS["database"]->select("users", ['user_zip', 'user_name'], ["user_id" => $offer_data['offer_user']]);
+					$user = $user[0];
+					
+					if(isset($zip)&&$zip!=""){
+						$url = "https://nl.afstand.org/route.json?stops=".$user["user_zip"]."|".$zip;
+						$result_string = file_get_contents($url);
+						$distance = json_decode($result_string, true);
+						$distance = $distance["distance"];
+
+					}
+					?>
+					<a style="<?php if(isset($_GET["max_distance"])&&$_GET["max_distance"]!=""&&isset($distance)&&$distance!=""&&$distance>$_GET["max_distance"]){ ?>display:none<?php }?>" href="<?php echo "product_view.php?id=".$offer_data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+					<div class="row">
+					<div class="col-9">
+					  <div class="d-flex w-100 justify-content-between">
+						<h5 class="mb-1"><?php echo $offer_data["offer_title"];?> </h5>
+						<small><?php if(isset($distance)){echo $distance; ?> km hemelsbreed<?php } ?></small>  
+					  </div>
+					   <p class="mb-1"><?php $maxLength = 400; $offer_description = substr( $offer_data["offer_description"], 0, $maxLength);  echo $offer_description; ?></p>
+					<small>Aangeboden door: <?php echo $user["user_name"];?></small>
+					</div>
+					<div class="col-md-auto">
+					<?php if($offer_data["offer_picture"]==""){?>
+						<img width="100px" src="<?php echo "../uploads/stock.jpg" ?>">
+					<?php }else{?>
+						<img width="100px" src="<?php echo "../uploads/" .$offer_data["offer_picture"] ?>">
+					<?php } ?>
+					</div>
+					</div>
+				  </a>
+		  
+		<?php			
+			}
+		?>
+	  </div>
+
+<?php 
+}
 }
 ?>
 
@@ -52,7 +63,9 @@ function getList($kind) {
         waar die aan toe is en dat de zaden op natuurlijke wijze verkregen zijn. En ook jij kan natuurlijk kijken bij het aanbod wat er te vinden valt voor je tuin!
         <br>
         <br>De website werkt door middel van een "geven en nemen" policy: Als jij wat van iemand neemt word er van je verwacht dat je in de nabije toekomst ook iets anders aanbied. Zo bouw je een hoeveelheid aan punten op die de aanbieders (ook mensen
-        zoals jij) van planten kunnen zien wanneer jij interesse toont.
+        zoals jij) van planten kunnen zien wanneer jij interesse toont.<br>
+		
+		
       </p>
     </div>
   </div>
@@ -75,9 +88,7 @@ function getList($kind) {
 </div>
 <div class="m-2">
   <div class="container">
-    <div class="row">
       <?php getList('Stek');?>
-    </div>
   </div>
 </div>
 <div class="">
@@ -92,9 +103,7 @@ function getList($kind) {
 </div>
 <div class="m-2">
   <div class="container">
-    <div class="row">
       <?php getList('Zaad');?>
-    </div>
   </div>
 </div>
 <div class="">
@@ -109,9 +118,7 @@ function getList($kind) {
 </div>
 <div class="m-2">
   <div class="container">
-    <div class="row">
       <?php getList('Plant');?>
-    </div>
   </div>
 </div>
 

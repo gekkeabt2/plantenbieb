@@ -1,8 +1,6 @@
 <?php
 include_once ("../template/header.php");
-
-require_once "../includes/config.php";
-
+include_once("../includes/config.php");
 if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
 	header("location: /users/login.php");
 	exit;
@@ -26,29 +24,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		if ((isset($pass) && $pass != "") || (isset($pass2) && $pass2 != "")) {
 			if ($pass == $pass2) {
 				$passs = md5($pass);
-				$pass_que = " , user_password = '$passs'";
-				$sql = "UPDATE users SET user_zip = '$zip', user_bio = '$bio' " . $pass_que . " WHERE user_id = $id";
-				if (mysqli_query($link, $sql)) {
-					$success = "Gegevens zijn met succes aangepast, u wordt nu uitgelogd.";
-					session_destroy();
-					header("location: /users/login.php");
-				}
-				else {
-					$error = "Er is iets fout gegaan..." . mysqli_error($link);
-				}
+				$data = $database->update("users", [
+					"user_zip" => $zip,
+					"user_bio" => $bio,
+					"user_password" => $passs,
+				], [
+					"user_id[=]" => $id
+				]);
+				$success = "Gegevens zijn met succes aangepast.";
 			}
 			else {
 				$error = "De ingevoerde wachtwoorden komen niet overeen.";
 			}
 		}
 		else {
-			$sql = "UPDATE users SET user_zip = '$zip', user_bio = '$bio' " . $pass_que . " WHERE user_id = $id";
-			if (mysqli_query($link, $sql)) {
+				$data = $database->update("users", [
+					"user_zip" => $zip,
+					"user_bio" => $bio
+				], [
+					"user_id[=]" => $id
+				]);
 				$success = "Gegevens zijn met succes aangepast.";
-			}
-			else {
-				$error = "Er is iets fout gegaan..." . mysqli_error($link);
-			}
 		}
 	}
 	else {

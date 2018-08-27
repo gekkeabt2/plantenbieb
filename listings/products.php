@@ -1,8 +1,6 @@
 <?php 
-
 include_once("../template/header.php");
 include_once("../includes/config.php");
-
 $title = $kind = $category = $zip = $cat_que = $kind_que = $max_distance = "";
 
 
@@ -11,7 +9,6 @@ if(isset($_GET["kind"])&&$_GET["kind"]!=""){
 }
 if(isset($_GET["zip"])&&$_GET["zip"]!=""){
 	$zip = preg_replace('/\s+/', '', $_GET["zip"]);
-	$zip_val1 = getLnt($zip);
 }
 if(isset($_GET["max_distance"])&&$_GET["max_distance"]!=""){
 	$max_distance =$_GET["max_distance"];
@@ -101,7 +98,13 @@ $result_offers = $pdo->query("SELECT * FROM offers WHERE (offer_title like '%$ti
 					$user = $database->select("users", ['user_zip', 'user_name'], ["user_id" => $offer_data['offer_user']]);
 					$user = $user[0];
 					
-					if(isset($_GET["zip"])&&$_GET["zip"]!=""){$zip_val2 = getLnt($user["user_zip"]); $distance = round(distance($zip_val1["lat"], $zip_val1["lng"], $zip_val2["lat"], $zip_val2["lng"], "K"),2);}
+					if(isset($zip)&&$zip!=""){
+						$url = "https://nl.afstand.org/route.json?stops=".$user["user_zip"]."|".$zip;
+						$result_string = file_get_contents($url);
+						$distance = json_decode($result_string, true);
+						$distance = $distance["distance"];
+
+					}
 					?>
 					<a style="<?php if(isset($_GET["max_distance"])&&$_GET["max_distance"]!=""&&isset($distance)&&$distance!=""&&$distance>$_GET["max_distance"]){ ?>display:none<?php }?>" href="<?php echo "product_view.php?id=".$offer_data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
 					<div class="row">

@@ -1,6 +1,6 @@
 <?php
-require_once "../includes/config.php";
-
+include_once ("../template/header.php");
+include_once("../includes/config.php");
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
 	{
 	header("location: ../index.php");
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		}
 	}
 
-include_once ("../template/header.php") ?>
+ ?>
 	
 	
 <div class="container">

@@ -1,6 +1,6 @@
 <?php
-require_once "../includes/config.php";
-
+include_once ("../template/header.php");
+include_once("../includes/config.php");
 $name = $mail = $zip = $pass = $pass2 = $bio = $error = $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
@@ -39,8 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	}
 
 ?>
-<?php
-include_once ("../template/header.php") ?>
 <div class="container">
   <div class="row">
     <div class="col-md-12">

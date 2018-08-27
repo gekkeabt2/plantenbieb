@@ -1,20 +1,19 @@
 <?php
 include_once ("../template/header.php");
-
-require_once "../includes/config.php";
-
+include_once("../includes/config.php");
 if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
 	header("location: /users/login.php");
 	exit;
 }
 
 $error = $success = $pass_que = "";
-$offers = $database->select("offers", ['offer_title', 'offer_description', 'offer_picture', 'offer_id'], ["offer_user" => $_SESSION["id"]]);
-$user = $database->select("users", ['user_mail', 'user_zip', 'user_bio', 'user_name'], ["user_id" => $_SESSION["id"]]);
+$offers = $database->select("offers", ['offer_title', 'offer_description', 'offer_picture', 'offer_id'], ["offer_user" => $_GET["id"]]);
+$user = $database->select("users", ['user_mail', 'user_zip', 'user_bio', 'user_name','user_created_at'], ["user_id" => $_GET["id"]]);
 $name = $user[0]["user_name"];
 $mail = $user[0]["user_mail"];
 $zip = $user[0]["user_zip"];
 $bio = $user[0]["user_bio"];
+$created = $user[0]["user_created_at"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$zip = $_POST["zip"];
@@ -60,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       <div class="row">
         <div class="col-md-12">
-          <h1 class="display-4">Mijn Profiel</h1>
+          <h1 class="display-4">Publieke Profiel</h1>
         </div>
       </div>
       <div class="row">
@@ -68,11 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row">
             <div class="col-md-6">
 			
-          <h1 class=""><?php
-echo $name; ?></h1>	
+          <h1 class=""><?php echo $name; ?></h1>	
 
+              <div class="card">
+                <div class="card-body">
 		<?php
-
 if ($error != "") { ?>
 		<div class="alert alert-warning"><?php
 	echo $error; ?></div>
@@ -89,12 +88,19 @@ if ($success != "") { ?>
               <form action="<?php
 echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  enctype="multipart/form-data">
                 <h4>Email address</h4>
-                  <?php echo $mail ?>
+                  <?php echo $mail ?><br><br>
 				<h4>Postcode</h4>
-                 <?php echo $zip ?>
+                 <?php echo $zip ?><br><br>
                   <h4>Profielbeschrijving</h4>
-                 <?php echo $bio ?>
+                 <?php echo $bio ?><br><br>
+                  <h4>Aangemeld op</h4>
+                 <?php echo $created ?>
             </div>
+            </div>
+            </div>
+			
+			
+			
             <div class="col-md-6">
 			<h1>Aanbod</h1>
               

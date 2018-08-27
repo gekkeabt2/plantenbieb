@@ -1,5 +1,6 @@
 <?php
-require_once "../includes/config.php";
+include_once("../template/header.php");
+include_once("../includes/config.php");
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
 {
 header("location: ../index.php");
@@ -27,8 +28,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$error = "Geen gebruiker gevonden met die emailadres, wil je misschien registreren?";
 		}
 }
-
-include_once("../template/header.php")
 ?>
     
 	

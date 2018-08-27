@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css"> </head>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../includes/chatbox.css" type="text/css">
+  <link rel="stylesheet" href="../includes/css.min.css" type="text/css">
+  <link rel="stylesheet" href="includes/css.min.css" type="text/css">
 
 
 <body>
@@ -35,7 +35,22 @@
 		  <a class="btn btn-primary" href="/listings/product_add.php" role="button"><i class="fa d-inline fa-lg fa-plus"></i></a>&nbsp;&nbsp;
 		  <?php session_start(); if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){ ?>
           <a class="btn btn-primary" href="/users/messages.php" role="button">
-            <i class="fa d-inline fa-lg fa-comments"></i> (2) </a>
+		  
+		  
+			<?php 
+			$config_1 = '../includes/config.php';
+			$config_2 = 'includes/config.php';
+			if (file_exists($config_1)) {
+				require_once $config_1;
+			} else {
+				require_once $config_2;
+			}
+			
+			
+			$messages = $pdo->query("SELECT * FROM messages WHERE message_to = ".$_SESSION["id"]." AND message_read = 0")->fetchAll();
+			$unread = count($messages);
+			?>
+            <i class="fa d-inline fa-lg fa-comments"></i> (<?php echo $unread; ?>) </a>
           </a>&nbsp;&nbsp;
         </form>
         <ul class="navbar-nav">

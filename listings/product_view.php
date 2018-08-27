@@ -1,6 +1,6 @@
 <?php 
-include_once("../template/header.php"); 
-include_once("../includes/config.php"); 
+include_once("../template/header.php");
+include_once("../includes/config.php");
 $id = $_GET["id"];
 $offers = $database->select("offers", ['offer_amount','offer_date','offer_picture','offer_title','offer_id','offer_user','offer_category','offer_description','offer_kind'], ["offer_id" => $id]);
 $offer_cat = $database->select("categories", ['cat_name'], ["cat_id" => $offers[0]["offer_category"]]);
@@ -8,10 +8,12 @@ $offer_user = $database->select("users", ['user_zip','user_id','user_name'], ["u
 
 $title = $offers[0]["offer_title"];
 $kind = $offers[0]["offer_kind"];
+$offer_id = $offers[0]["offer_id"];
 $description = $offers[0]["offer_description"];
 $date = $offers[0]["offer_date"];
 $amount = $offers[0]["offer_amount"];
 $picture = $offers[0]["offer_picture"];
+$offer_user_id = $offers[0]["offer_user"];
 $category = $offer_cat[0]["cat_name"];
 
 $user = $offer_user[0]["user_name"];
@@ -44,7 +46,7 @@ $user_zip = $offer_user[0]["user_zip"];
             <div class="col-md-6">
               <img class="img-fluid d-block" src="<?php if($picture!=""){echo "../uploads/" . $picture;}else{echo "../uploads/stock.jpg";} ?>">
               <br>
-              <a class="btn btn-primary" href="public_profile.php?id=<?php echo $user_id; ?>">Contact opnemen </a><br><br>
+              <?php if(isset($_SESSION["id"])){if($_SESSION["id"] != $offer_user_id){ ?><a class="btn btn-primary" href="../users/messages.php?id=<?php echo $offer_user_id; ?>">Contact opnemen </a><br><?php }}else{echo "<div class='alert alert-warning'>U dient ingelogd te zijn om contact op te kunnen nemen met de aanbieder.</div>";} ?><br>
             </div>
           </div>
         </div>
