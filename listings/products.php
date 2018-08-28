@@ -28,7 +28,7 @@ $result_offers = $pdo->query("SELECT * FROM offers WHERE (offer_title like '%$ti
 ?>
 <h1 class="display-4">Aanbod</h1>
 
-<form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>" method="get">
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get">
     <div class="row">
         <div class="col">
             <div class="form-group">
@@ -120,7 +120,7 @@ $result_offers = $pdo->query("SELECT * FROM offers WHERE (offer_title like '%$ti
                     <?php if($offer_data["offer_picture"]==""){?>
                     <img width="200px" src="<?php echo " uploads/stock.jpg " ?>">
                     <?php }else{?>
-                    <img width="200px" src="<?php echo " uploads/ " .$offer_data["offer_picture "] ?>">
+                    <img width="200px" src="<?php echo " uploads/" .$offer_data["offer_picture"] ?>">
                     <?php } ?>
                 </div>
             </div>
