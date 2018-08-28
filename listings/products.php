@@ -91,6 +91,7 @@ $result_offers = $pdo->query("SELECT * FROM offers WHERE (offer_title like '%$ti
 
 <div class="list-group">
     <?php
+		if(count($result_offers)!=0){
 			foreach($result_offers as $offer_data){
 					// Get the user data //
 					$user = $database->select("users", ['user_zip', 'user_name'], ["user_id" => $offer_data['offer_user']]);
@@ -126,6 +127,8 @@ $result_offers = $pdo->query("SELECT * FROM offers WHERE (offer_title like '%$ti
             </div>
         </a>
         <?php			
+		}}else{
+				echo "Geen resultaten gevonden :(";
 			}
 		?>
 </div>

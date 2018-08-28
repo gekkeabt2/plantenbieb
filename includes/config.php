@@ -1,4 +1,16 @@
 <?php
+// Get composer packages //
+$config_1 = '../vendor/autoload.php';
+$config_2 = 'vendor/autoload.php';
+if (file_exists($config_1)) {
+	require_once $config_1;
+} else {
+	require_once $config_2;
+}
+
+
+
+
 
 // Setup the Medoo and PDO methods for databases //
 // MeDoo // 

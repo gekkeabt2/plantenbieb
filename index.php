@@ -1,5 +1,7 @@
 <?php 
 // Include the base files //
+// Get composer packages //
+require __DIR__ . '/vendor/autoload.php';
 include_once("template/header.php"); 
 require_once("includes/config.php"); 
 
@@ -47,16 +49,7 @@ function getList($kind) {
 <main role="main">
   <div class="jumbotron p-2">
     <div class="col-sm-8 mx-auto">
-      <h1>Bij de PlantenBieb vind je het voor niets!
-      </h1>
-      <p>Door middel van deze website willen we de tussenpersoon tussen natuur en consument vervangen door een andere consument. Door jouw zaden/stekjes/planten aan te bieden die jij niet (meer) nodig hebt kan je een ander blij maken. Zo weet de afnemer
-        waar die aan toe is en dat de zaden op natuurlijke wijze verkregen zijn. En ook jij kan natuurlijk kijken bij het aanbod wat er te vinden valt voor je tuin!
-        <br>
-        <br>De website werkt door middel van een "geven en nemen" policy: Als jij wat van iemand neemt word er van je verwacht dat je in de nabije toekomst ook iets anders aanbied. Zo bouw je een hoeveelheid aan punten op die de aanbieders (ook mensen
-        zoals jij) van planten kunnen zien wanneer jij interesse toont.<br>
-		
-		
-      </p>
+      <h1>Bij de PlantenBieb vind je het voor niets!</h1>
     </div>
   </div>
 </main>

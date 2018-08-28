@@ -8,6 +8,9 @@ else {
 	header("location: ../users/login");
     exit;
 }
+// Initialize PHPMailer //
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 // Set the variables //
 $error = $succes = $disabled = $messages = $error2 = $user_to_id = "";
@@ -58,6 +61,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
 		// Assign the values to the variables //
         $user_to_name = $user[0]["user_name"];
         $user_to_id = $user[0]["user_id"];
+        $user_to_mail = $user[0]["user_mail"];
 		// Check if the user wants to talk to him-/herself //
         if ($user_to_id == $user_from_id) {
 			// Throw error //
@@ -69,7 +73,43 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
             $input_text = $_POST["input_text"];
 			// Insert the message into the database //
             $database->insert("messages", ["message_offer" => $_GET["id"], "message_from" => $user_from_id, "message_to" => $user_to_id, "message_content" => $_POST["input_text"]]);
-            // Refresh the page to reset the POST values //
+            
+			
+			// Send mail to user //
+			$mail = new PHPMailer(TRUE);
+			try {
+			   $mail->setFrom('noreply@ahmedsy301.301.axc.nl', 'PlantenBieb');
+			   $mail->addAddress($user_to_mail, $user_to_name);
+			   $mail->Subject = 'Nieuw bericht op PlantenBieb';
+			   $mail->isHTML(TRUE);
+			   $mail->Body = "
+			   <h2>PlantenBieb</h2>
+			   <h5>Nieuw bericht op PlantenBieb</h5>
+			   <p>
+					Er is zojuist een nieuw bericht gestuurd naar jou. Log in op plantenbieb.nl om te reageren.
+					<br><br>
+					<b>Bericht van</b>: ".$_SESSION["name"]."<br>
+					<b>Bericht</b>: ". $input_text."
+					
+					<br><br>
+					======================
+					<br><br>
+					Groeten,<br>
+					PlantenBieb!
+			   
+			   </p>   
+			   ";
+			   $mail->send();
+			}catch (Exception $e){
+			   echo $e->errorMessage();
+			}catch (\Exception $e){
+			   echo $e->getMessage();
+			}
+			$success = "Check je email voor je nieuwe wachtwoord." ;
+			
+			
+			
+			// Refresh the page to reset the POST values //
 			header('Location: ' . $_SERVER['REQUEST_URI']);
             exit();
         }

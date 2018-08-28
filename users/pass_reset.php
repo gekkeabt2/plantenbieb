@@ -7,21 +7,52 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
 header("location: ../index.php");
 exit;
 }
+// Initialize PHPMailer //
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
  
- $error = $email = $success = "";
-// Processing form data when form is submitted
+$error = $email = $success = "";
+// Processing form data when form is submitted //
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $user = $database->select("users", ['user_password','user_mail','user_id'], ["user_mail" => $_POST["email"]]);
+	// Check if user exists //
+    $user = $database->select("users", ['user_name','user_password','user_mail','user_id'], ["user_mail" => $_POST["email"]]);
 	if (count($user) != 0)
 		{
-		$to      = 'gekkeabt2@gmail.com';
-		$subject = 'the subject';
-		$message = 'hello';
-		$headers = 'From: webmaster@example.com' . "\r\n" .
-			'Reply-To: webmaster@example.com' . "\r\n" .
-			'X-Mailer: PHP/' . phpversion();
-
-		mail($to, $subject, $message, $headers);
+		// Generate new password //
+		$randomString = generateRandomString();
+		$mdRandomString = md5($randomString);
+		// Insert new password
+		$data = $database->update("users", [
+			"user_password" => $mdRandomString
+		], [
+			"user_mail[=]" => $_POST["email"]
+		]);
+		// Send mail to user //
+		$mail = new PHPMailer(TRUE);
+		try {
+		   $mail->setFrom('noreply@ahmedsy301.301.axc.nl', 'PlantenBieb');
+		   $mail->addAddress($user[0]['user_mail'], $user[0]['user_name']);
+		   $mail->Subject = 'Wachtwoord vergeten';
+		   $mail->isHTML(TRUE);
+		   $mail->Body = "
+		   <h2>PlantenBieb</h2>
+		   <h5>Nieuwe wachtwoord</h5>
+		   <p>
+				Je nieuwe wachtwoord is: <b>" . $randomString . "</b><br>
+				Gebruik deze wachtwoord om in te loggen en daarna op je profielpagina je wachtwoord aan te passen.<br><br>
+				
+				Groeten,<br>
+				PlantenBieb!
+		   
+		   </p>   
+		   ";
+		   $mail->send();
+		}catch (Exception $e){
+		   echo $e->errorMessage();
+		}catch (\Exception $e){
+		   echo $e->getMessage();
+		}
 		$success = "Check je email voor je nieuwe wachtwoord." ;
 		}
 	  else
@@ -38,7 +69,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <div class="container">
   <div class="row">
 	 <div class="col-md-12">
-		<h1 class="display-4">Wachtwoord resetten - Uitgeschakeld</h1>
+		<h1 class="display-4">Wachtwoord resetten</h1>
 	 </div>
   </div>
   <div class="row">
@@ -53,7 +84,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			<div class="alert alert-success"><?php
 	echo $success; ?></div>
 			<?php } ?>
-        <p><b>Op dit moment nog uitgeschakeld, neem contact op met admin@admin.com voor een reset van je wachtwoord.</b></p>
         <p>Vul je email in en je nieuwe wachtwoord zal ernaartoe gestuurd worden. Tip: Check je spam folder als de mail niet in je inbox komt ;)</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> 
             <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">
@@ -61,7 +91,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="email" name="email" class="form-control" >
             </div>
             <div class="form-group">
-                <input type="submit" disabled class="btn btn-primary" value="Submit">
+                <input type="submit" class="btn btn-primary" value="Submit">
                 <a class="btn btn-link" href="users/login.php">Cancel</a>
             </div>
         </form>

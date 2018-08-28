@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	$mail = $_POST["mail"];
 	$pass = md5($_POST["pass"]);
 	// Select the data that belongs to the mail //
-	$user = $database->select("users", ['user_password','user_mail','user_id'], ["user_mail" => $mail]);
+	$user = $database->select("users", ['user_name','user_password','user_mail','user_id'], ["user_mail" => $mail]);
 	// Check if there is a result //
 	if (count($user) != 0)
 		{
@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$_SESSION["loggedin"] = true;
 			$_SESSION["id"] = $user[0]["user_id"];
 			$_SESSION["mail"] = $user[0]["user_mail"];
+			$_SESSION["name"] = $user[0]["user_name"];
 			// Redirect to the homepage //
 			header("location: ../index.php");
 			}
