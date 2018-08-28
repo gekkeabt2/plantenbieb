@@ -2,7 +2,7 @@
 include_once ("../template/header.php");
 include_once("../includes/config.php");
 if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
-	header("location: /users/login.php");
+	header("location: ../users/login");
 	exit;
 }
 
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				if (mysqli_query($link, $sql)) {
 					$success = "Gegevens zijn met succes aangepast, u wordt nu uitgelogd.";
 					session_destroy();
-					header("location: /users/login.php");
+					header("location: /users/login");
 				}
 				else {
 					$error = "Er is iets fout gegaan..." . mysqli_error($link);
@@ -109,7 +109,7 @@ echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  enctype="multipa
 if (count($offers) != 0) {
 	foreach($offers as $data) { ?>
 					<a href="<?php
-		echo "product_view.php?id=" . $data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+		echo "listings/product_view?id=" . $data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
 					<div class="row">
 					<div class="col-9">
 					  <div class="d-flex w-100 justify-content-between">
@@ -125,13 +125,13 @@ if (count($offers) != 0) {
 					<?php
 		if ($data["offer_picture"] == "") { ?>
 						<img width="75px" src="<?php
-			echo "../uploads/stock.jpg" ?>">
+			echo "uploads/stock.jpg" ?>">
 					
 					<?php
 		}
 		else { ?>
 						<img width="75px" src="<?php
-			echo "../uploads/" . $data["offer_picture"] ?>">
+			echo "uploads/" . $data["offer_picture"] ?>">
 					<?php
 		} ?>
 					</div>

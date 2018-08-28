@@ -117,7 +117,7 @@ echo $bio; ?>
           <input type="reset" class="btn btn-default" value="Reset">
         </div>
         <p>Heeft u al een account? 
-          <a href="login.php">Inloggen
+          <a href="users/login.php">Inloggen
           </a>.
         </p>
       </form>

@@ -3,7 +3,7 @@ include_once ("../template/header.php");
 include_once("../includes/config.php");
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
 	{
-	header("location: ../index.php");
+	header("location: ../users/login");
 	exit;
 	}
 
@@ -68,8 +68,8 @@ echo $mail; ?>">
 			  <div class="form-group">
 				 <input type="submit" class="btn btn-primary" value="Inloggen">
 			  </div>
-			  <p>Heeft u nog geen account? <a href="register.php">Registreer!</a>.</p>
-			  <p>Wachtwoord vergeten? <a href="pass_reset.php">Reset uw wachtwoord</a>.</p>
+			  <p>Heeft u nog geen account? <a href="users/register.php">Registreer!</a>.</p>
+			  <p>Wachtwoord vergeten? <a href="users/pass_reset.php">Reset uw wachtwoord</a>.</p>
 		   </form>
 	 </div>
   </div>

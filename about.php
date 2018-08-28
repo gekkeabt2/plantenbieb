@@ -2,6 +2,6 @@
 
 
 <h1 class="display-4">Over</h1>
-<p>Een stukje over ons!</p>
+<p>Nog aan te vullen.</p>
  
 <?php include_once("template/footer.php")?>

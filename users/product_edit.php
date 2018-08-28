@@ -2,7 +2,7 @@
 include_once("../template/header.php");
 include_once("../includes/config.php");
 if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true){
-    header("location: /users/login.php");
+	header("location: ../users/login");
     exit;
 }
 $title = $kind = $category = $description = $amount = $picture = $error = $success = "";
@@ -153,7 +153,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				  <div class="form-group">
 					 <label>Foto</label>
 					 <input type="file" name="fileToUpload" id="fileToUpload" class="form-control">
-					 <br><img id="image_upload_preview" src="<?php if($picture!=""){echo "../uploads/" . $picture;}else{ echo "http://placehold.it/200x200";} ?>" alt="your image"  width="200px"/>
+					 <br><img id="image_upload_preview" src="<?php if($picture!=""){echo "uploads/" . $picture;}else{ echo "http://placehold.it/200x200";} ?>" alt="your image"  width="200px"/>
 				  </div>
 				  
 				  

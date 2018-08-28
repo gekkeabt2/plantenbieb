@@ -7,7 +7,7 @@ header("location: ../index.php");
 exit;
 }
  
- $error = $email = "";
+ $error = $email = $success = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $user = $database->select("users", ['user_password','user_mail','user_id'], ["user_mail" => $_POST["email"]]);
@@ -61,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <div class="form-group">
                 <input type="submit" disabled class="btn btn-primary" value="Submit">
-                <a class="btn btn-link" href="login.php">Cancel</a>
+                <a class="btn btn-link" href="users/login.php">Cancel</a>
             </div>
         </form>
 	 </div>

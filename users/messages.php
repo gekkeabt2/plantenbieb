@@ -4,7 +4,7 @@ include_once("../includes/config.php");
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 else {
-    header("location: ../index.php");
+	header("location: ../users/login");
     exit;
 }
 
@@ -64,7 +64,6 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
     }
 }
 ?>
-
     <div class="container">
 	<div class="row">
         <div class="col-md-12">
@@ -101,7 +100,7 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
     $messages_spec = $pdo->query("SELECT * FROM messages WHERE message_to = " . $_SESSION["id"] . " AND message_from = " . $user_id . " AND message_read = 0")->fetchAll();
     $unread = count($messages_spec);
 ?>
-            <a href="?id=<?php if ($conv["conv_u1"] == $_SESSION["id"]) {
+            <a href="users/messages.php?id=<?php if ($conv["conv_u1"] == $_SESSION["id"]) {
         echo $conv["conv_u2"];
     }
     else {

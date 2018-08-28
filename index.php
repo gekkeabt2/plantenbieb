@@ -23,7 +23,7 @@ function getList($kind) {
 
 					}
 					?>
-					<a style="<?php if(isset($_GET["max_distance"])&&$_GET["max_distance"]!=""&&isset($distance)&&$distance!=""&&$distance>$_GET["max_distance"]){ ?>display:none<?php }?>" href="<?php echo "product_view.php?id=".$offer_data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+					<a style="<?php if(isset($_GET["max_distance"])&&$_GET["max_distance"]!=""&&isset($distance)&&$distance!=""&&$distance>$_GET["max_distance"]){ ?>display:none<?php }?>" href="<?php echo "listings/product_view?id=".$offer_data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
 					<div class="row">
 					<div class="col-9">
 					  <div class="d-flex w-100 justify-content-between">
@@ -35,9 +35,9 @@ function getList($kind) {
 					</div>
 					<div class="col-md-auto">
 					<?php if($offer_data["offer_picture"]==""){?>
-						<img width="100px" src="<?php echo "../uploads/stock.jpg" ?>">
+						<img width="100px" src="<?php echo "uploads/stock.jpg" ?>">
 					<?php }else{?>
-						<img width="100px" src="<?php echo "../uploads/" .$offer_data["offer_picture"] ?>">
+						<img width="100px" src="<?php echo "uploads/" .$offer_data["offer_picture"] ?>">
 					<?php } ?>
 					</div>
 					</div>

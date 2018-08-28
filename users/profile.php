@@ -2,7 +2,7 @@
 include_once ("../template/header.php");
 include_once("../includes/config.php");
 if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] != true) {
-	header("location: /users/login.php");
+	header("location: ../users/login");
 	exit;
 }
 
@@ -114,7 +114,7 @@ echo $bio ?></textarea>
 if (count($offers) != 0) {
 	foreach($offers as $data) { ?>
 					<a href="<?php
-		echo "product_edit.php?id=" . $data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+		echo "users/product_edit.php?id=" . $data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
 					<div class="row">
 					<div class="col-9">
 					  <div class="d-flex w-100 justify-content-between">
@@ -130,13 +130,13 @@ if (count($offers) != 0) {
 					<?php
 		if ($data["offer_picture"] == "") { ?>
 						<img width="75px" src="<?php
-			echo "../uploads/stock.jpg" ?>">
+			echo "uploads/stock.jpg" ?>">
 					
 					<?php
 		}
 		else { ?>
 						<img width="75px" src="<?php
-			echo "../uploads/" . $data["offer_picture"] ?>">
+			echo "uploads/" . $data["offer_picture"] ?>">
 					<?php
 		} ?>
 					</div>

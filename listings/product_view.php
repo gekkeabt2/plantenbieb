@@ -34,7 +34,7 @@ $user_zip = $offer_user[0]["user_zip"];
             <div class="col-md-6">
               <div class="card">
                 <div class="card-body">
-                  <h4>Door: <a href="public_profile.php?id=<?php echo $user_id; ?>"><?php echo $user; ?></a></h4>
+                  <h4>Door: <a href="listings/public_profile?id=<?php echo $user_id; ?>"><?php echo $user; ?></a></h4>
                   <h6 class="text-muted"><?php echo $kind; ?> -&gt; <?php echo $category; ?></h6>
                   <p><b>Omschrijving</b><br><?php echo $description; ?></p>
                   <p><b>Hoeveelheid</b><br><?php echo $amount; ?></p>
@@ -44,9 +44,9 @@ $user_zip = $offer_user[0]["user_zip"];
               </div>
             </div>
             <div class="col-md-6">
-              <img class="img-fluid d-block" src="<?php if($picture!=""){echo "../uploads/" . $picture;}else{echo "../uploads/stock.jpg";} ?>">
+              <img class="img-fluid d-block" src="<?php if($picture!=""){echo "uploads/" . $picture;}else{echo "uploads/stock.jpg";} ?>">
               <br>
-              <?php if(isset($_SESSION["id"])){if($_SESSION["id"] != $offer_user_id){ ?><a class="btn btn-primary" href="../users/messages.php?id=<?php echo $offer_user_id; ?>">Contact opnemen </a><br><?php }}else{echo "<div class='alert alert-warning'>U dient ingelogd te zijn om contact op te kunnen nemen met de aanbieder.</div>";} ?><br>
+              <?php if(isset($_SESSION["id"])){if($_SESSION["id"] != $offer_user_id){ ?><a class="btn btn-primary" href="../users/messages?id=<?php echo $offer_user_id; ?>">Contact opnemen </a><br><?php }}else{echo "<div class='alert alert-warning'>U dient ingelogd te zijn om contact op te kunnen nemen met de aanbieder.</div>";} ?><br>
             </div>
           </div>
         </div>
