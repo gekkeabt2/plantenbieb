@@ -1,4 +1,5 @@
 <?php
+// Include the base files and check if user is logged in //
 include_once("../template/header.php");
 include_once("../includes/config.php");
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)

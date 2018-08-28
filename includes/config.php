@@ -1,4 +1,7 @@
 <?php
+
+// Setup the Medoo and PDO methods for databases //
+// MeDoo // 
 require_once  'Medoo.php';
 use Medoo\Medoo;
 $database = new Medoo([
@@ -9,13 +12,12 @@ $database = new Medoo([
 	'username' => 'root',
 	'password' => ''
 ]);
-
+// PDO //
 $host = '127.0.0.1';
 $db   = 'planten';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
-
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -28,6 +30,8 @@ try {
      throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 
+
+// Random String Generator for the Image titles //
 function generateRandomString($length = 100) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);

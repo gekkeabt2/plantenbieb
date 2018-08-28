@@ -1,57 +1,47 @@
 <?php 
+// Include the base files //
 include_once("template/header.php"); 
 require_once("includes/config.php"); 
-// Get a list of the specified kind //
+
+
+// Function to get a list of the specified kind //
 function getList($kind) {
-	$result_offers = $GLOBALS["pdo"]->query("SELECT * FROM offers WHERE offer_kind = '$kind'")->fetchAll();
+	// Get the last 4 offers //
+	$result_offers = $GLOBALS["pdo"]->query("SELECT * FROM offers WHERE offer_kind = '$kind' LIMIT 4")->fetchAll();
+	// Show message when there are no offers //
 	if(count($result_offers)=="0"){
-	echo "Geen resultaten gevonden, wees de eerste die iets toevoegt!";
-	}else{?>
+		echo "Geen resultaten gevonden, wees de eerste die iets toevoegt!";
+	}else{
+	?>
 	
-<div class="list-group">	
+	<div class="list-group">	
 		<?php
 			foreach($result_offers as $offer_data){
-					
+					// Get the user data //
 					$user = $GLOBALS["database"]->select("users", ['user_zip', 'user_name'], ["user_id" => $offer_data['offer_user']]);
 					$user = $user[0];
-					
-					if(isset($zip)&&$zip!=""){
-						$url = "https://nl.afstand.org/route.json?stops=".$user["user_zip"]."|".$zip;
-						$result_string = file_get_contents($url);
-						$distance = json_decode($result_string, true);
-						$distance = $distance["distance"];
-
-					}
 					?>
-					<a style="<?php if(isset($_GET["max_distance"])&&$_GET["max_distance"]!=""&&isset($distance)&&$distance!=""&&$distance>$_GET["max_distance"]){ ?>display:none<?php }?>" href="<?php echo "listings/product_view?id=".$offer_data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
+					<a href="<?php echo "listings/product_view?id=".$offer_data['offer_id']; ?>" class="list-group-item list-group-item-action flex-column align-items-start">
 					<div class="row">
-					<div class="col-9">
-					  <div class="d-flex w-100 justify-content-between">
-						<h5 class="mb-1"><?php echo $offer_data["offer_title"];?> </h5>
-						<small><?php if(isset($distance)){echo $distance; ?> km hemelsbreed<?php } ?></small>  
-					  </div>
-					   <p class="mb-1"><?php $maxLength = 400; $offer_description = substr( $offer_data["offer_description"], 0, $maxLength);  echo $offer_description; ?></p>
-					<small>Aangeboden door: <?php echo $user["user_name"];?></small>
-					</div>
-					<div class="col-md-auto">
-					<?php if($offer_data["offer_picture"]==""){?>
-						<img width="100px" src="<?php echo "uploads/stock.jpg" ?>">
-					<?php }else{?>
-						<img width="100px" src="<?php echo "uploads/" .$offer_data["offer_picture"] ?>">
-					<?php } ?>
-					</div>
+						<div class="col-9">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-1"><?php echo $offer_data["offer_title"];?> </h5>
+							</div>
+							<p class="mb-1"><?php $maxLength = 400; $offer_description = substr( $offer_data["offer_description"], 0, $maxLength);  echo $offer_description; ?></p>
+							<small>Aangeboden door: <?php echo $user["user_name"];?></small>
+						</div>
+						<div class="col-md-auto">
+							<?php if($offer_data["offer_picture"]==""){?>
+							<img width="100px" src="<?php echo "uploads/stock.jpg" ?>">
+							<?php }else{?>
+							<img width="100px" src="<?php echo "uploads/" .$offer_data["offer_picture"] ?>">
+							<?php } ?>
+						</div>
 					</div>
 				  </a>
-		  
-		<?php			
-			}
-		?>
-	  </div>
-
-<?php 
-}
-}
-?>
+		<?php } ?>
+	</div>
+<?php }} ?>
 
 
 <main role="main">
