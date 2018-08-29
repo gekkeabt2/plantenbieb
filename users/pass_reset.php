@@ -24,7 +24,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$mdRandomString = md5($randomString);
 		// Insert new password
 		$data = $database->update("users", [
-			"user_password" => $mdRandomString
+			"user_password" => $mdRandomString,
+			"user_active" => 1
 		], [
 			"user_mail[=]" => $_POST["email"]
 		]);
@@ -92,7 +93,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">
-                <a class="btn btn-link" href="users/login.php">Cancel</a>
+                <a class="btn btn-link" href="users/login">Cancel</a>
             </div>
         </form>
 	 </div>

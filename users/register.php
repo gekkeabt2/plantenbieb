@@ -2,6 +2,9 @@
 // Include the base files and check if user is logged in //
 include_once ("../template/header.php");
 include_once("../includes/config.php");
+// Initialize PHPMailer //
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 // Set the variables //
 $name = $mail = $zip = $pass = $pass2 = $bio = $error = $success = "";
@@ -31,7 +34,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			}else{
 			// Insert the new user //
 			$database->insert("users", ["user_name" => $name, "user_mail" => $mail, "user_zip" => $zip, "user_password" => md5($_POST["pass"]) , "user_points" => 0, "user_bio" => $bio]);
-			$success = "Gefeliciteerd! U kunt nu inloggen via de <a href='users/login.php'>inlog pagina.</a>";
+			$success = "Gefeliciteerd! Je kunt nu je account activeren met de mail die je ontvangen hebt. Tip: Check je spam folder als die niet in je inbox zit. ";
+			$mail2 = $mail;
+			$mail = new PHPMailer(TRUE);
+			try {
+			   $mail->setFrom('noreply@ahmedsy301.301.axc.nl', 'PlantenBieb');
+			   $mail->addAddress($mail2, $name);
+			   $mail->Subject = 'Account activeren';
+			   $mail->isHTML(TRUE);
+			   $mail->Body = "
+			   <h2>PlantenBieb</h2>
+			   <h5>Account activeren</h5>
+			   <p>
+					Klik op de link om je account te activeren: <b><a href='ahmedsy301.301.axc.nl/users/activate?key=" . $mail2 . "&rg=awdi42u8338rhd9@dha982dh9dhuahdwuiihdiwauhdaiuwiuhiwahduguaifawdlawhdiawudhjfawhdafhi'>Klik hier!</a></b><br><br>
+					U kunt na het bezoeken van de link direct inloggen.<br><br>
+					
+					
+					Groeten,<br>
+					PlantenBieb!
+			   
+			   </p>   
+			   ";
+			   $mail->send();
+			}catch (Exception $e){
+			   echo $e->errorMessage();
+			}catch (\Exception $e){
+			   echo $e->getMessage();
+			}
+			
 			$name = $mail = $zip = $pass = $pass2 = $bio = "";
 			}
 		}
